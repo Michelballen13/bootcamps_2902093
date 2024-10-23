@@ -1,0 +1,17 @@
+meta {
+  name: actualizar_bootcamp
+  type: http
+  seq: 4
+}
+
+patch {
+  url: http://localhost:3000/bootcamps/id
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "JS Websockets"
+  }
+}
