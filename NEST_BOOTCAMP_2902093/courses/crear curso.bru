@@ -1,0 +1,25 @@
+meta {
+  name: crear curso
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://localhost:3000/courses
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "title" : "WEBSOCKETS EN JS",
+    "wees" : 5,
+    "tuition" : 450000.90,
+    "minimumSkill" :"Beginner",
+    "createAt" : "2022-02-02"
+  }
+}

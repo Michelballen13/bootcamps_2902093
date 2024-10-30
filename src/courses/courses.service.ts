@@ -13,22 +13,33 @@ export class CoursesService {
     @InjectRepository(Course) private courseRepository: Repository <Course>,
   ) {}
 
-  create(createCourseDto: CreateCourseDto) {
-    return 'This action adds a new course';
+  create(payload: any) {
+    const newCurso = this.courseRepository.create(payload)
+    return this.courseRepository.save(newCurso)
   }
 
   findAll() {
-    return this.courseRepository.find();;;
+    return this.courseRepository.find();
   }
 
   findOne(id: number) {
-    return this.courseRepository.findOneBy({id});;
+    return this.courseRepository.findOneBy({id: id});
   }
 
-  update(id: number, updateCourseDto: UpdateCourseDto) {
-    return `This action updates a #${id} course`;
+
+  async update(id: number, payload: any) {
+    const updCourses = await this.courseRepository.findOneBy({id}) ; 
+  
+    this.courseRepository.merge(updCourses , payload)
+
+    return this.courseRepository.save(updCourses)
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} course`;
-  }}
+  async remove(id: number) {
+    const delCourse = await this.courseRepository.findOneBy({id});
+
+    this.courseRepository.delete(delCourse)
+
+    return delCourse 
+  }
+}

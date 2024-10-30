@@ -17,10 +17,10 @@ export class Bootcamp {
     @Column('text')
     topics: string
 
-    @Column('double')
+    @Column( {name: 'average_rating'} )
     averageRating: number
 
-    @Column('date')
+    @Column( {type: 'timestamp' , name: 'created_at' , default: () => 'CURRENT_TIMESTAMP'} )
     createdAt: Date
 
 }

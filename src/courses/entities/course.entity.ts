@@ -5,19 +5,19 @@ export class Course {
     @PrimaryGeneratedColumn()
     id: number 
 
-    @Column('varchar' , {length:30})
-    title: string
+    @Column({type:'varchar' , length:100, nullable: true })
+    title: string;
+
+    @Column({ type: 'tinyint', nullable: true, default:4})
+    weeks: number;
+
+    @Column({ type: 'decimal', nullable: true})
+    tuition: number;
 
     @Column('varchar' , {length:30})
     description: string
 
-    @Column('double')
-    weeks: number
-
-    @Column('double')
-    tuition: number
-
-    @Column('varchar' , {length:30})
+    @Column({ name:'minimum_skill', type: 'enum' , enum:["Beginner", "Intermediate", "Advanced"],  })
     minimumSkill : minimumSkill
 
     @Column('date')
