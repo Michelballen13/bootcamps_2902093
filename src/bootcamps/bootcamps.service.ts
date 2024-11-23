@@ -3,27 +3,22 @@ import { UpdateBootcampDto } from './dto/update-bootcamp.dto';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Bootcamp } from './entities/bootcamp.entity';
+import { CreateBootcampDto } from './dto/create-bootcamp.dto';
+import { Controller, Get, Post, Body, Patch, Param, Delete , NotFoundException} from '@nestjs/common';
 
 @Injectable()
 export class BootcampsService {
 
-  //inyectar: obtener una isntancia del
-  //repositorio como atributo de 
-  //la clase BotcampsService: sin
-  //necesidad de instanciarlo
   constructor(@InjectRepository(Bootcamp)
     private bootcampRepository:
       Repository<Bootcamp>  ){
 
     }
 
-  create(payload: any) {
-    //1.Crear una instancia de una entity bootcamp 
-    //bootcampm
+  create(body: CreateBootcampDto) {
     const newBootcamp = this.
                         bootcampRepository.
-                        create(payload);
-    //2. grabar esa instancia y retornarla
+                        create(body);
     return  this.
             bootcampRepository.
             save(newBootcamp)
@@ -33,20 +28,35 @@ export class BootcampsService {
     return this.bootcampRepository.find()
   }
 
-  findOne(id: number) {
-    return this.bootcampRepository.findOneBy({id}) ;
-  }
-
-  async update(id: number, payload: any) {
-    const updBootcamp = await this.bootcampRepository.findOneBy({id}) ; 
   
-    this.bootcampRepository.merge(updBootcamp , payload)
+findOne(@Param('id') id: number) {
+  const bootcamp =
+  this.bootcampRepository.findOneBy({id});
+    if (!bootcamp) {
+        throw new
+        NotFoundException ( `No existe`)
+    }
+    return bootcamp 
+  } 
+
+  async update(id: number, body: UpdateBootcampDto) {
+    const updBootcamp = await this.bootcampRepository.findOneBy({id}) ; 
+
+    if ( !updBootcamp ) { 
+      throw new NotFoundException (`No existe`)
+    }
+  
+    this.bootcampRepository.merge(updBootcamp , body)
 
     return this.bootcampRepository.save(updBootcamp)
   }
 
   async remove(id: number) {
     const delBootcamp = await this.bootcampRepository.findOneBy({id});
+
+    if ( !delBootcamp ) { 
+      throw new NotFoundException (`No existe`)
+    }
 
     this.bootcampRepository.delete(delBootcamp)
 

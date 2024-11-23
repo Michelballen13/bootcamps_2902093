@@ -8,7 +8,7 @@ export class CoursesController {
   constructor(private readonly coursesService: CoursesService) {}
 
   @Post()
-  create(@Body() body: any) {
+  create(@Body() body: CreateCourseDto) {
     return this.coursesService.create(body);
   }
 

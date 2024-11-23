@@ -8,7 +8,7 @@ export class BootcampsController {
   constructor(private readonly bootcampsService: BootcampsService) {}
 
   @Post()
-  create(@Body() payload: any) {
+  create(@Body() payload: CreateBootcampDto) {
     //paylod:Sinonimo del body de la request
     //         Create, Update
     return  this.
@@ -22,13 +22,14 @@ export class BootcampsController {
     return this.bootcampsService.findAll();
   }
 
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.bootcampsService.findOne(+id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() payload:any) {
+  update(@Param('id') id: string, @Body() payload:UpdateBootcampDto) {
     return this.bootcampsService.update(+id, payload)
   }
 

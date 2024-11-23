@@ -6,31 +6,31 @@ import { ReviewsController } from './reviews.controller';
 
 import { CreateReviewDto } from './dto/create-review.dto';
 import { UpdateReviewDto } from './dto/update-review.dto';
+import { Bootcamp } from 'src/bootcamps/entities/bootcamp.entity';
 
 @Injectable()
 export class ReviewsService {
 
-  //inyectar: obtener una isntancia del
-  //repositorio como atributo de 
-  //la clase BotcampsService: sin
-  //necesidad de instanciarlo
-  constructor(@InjectRepository(Review)
-    private reviewRepository:
-      Repository<Review>  ){
+  constructor(
+    @InjectRepository(Review) private reviewRepository: Repository <Review>,
+    @InjectRepository(Bootcamp) private bootcampRepository: Repository <Bootcamp>
+  ) {}
 
-    }
+async create(payload: CreateReviewDto) {
 
-  create(payload: any) {
-    //1.Crear una instancia de una entity bootcamp 
-    //bootcampm
-    const newReview = this.
-    reviewRepository.
-                        create(payload);
-    //2. grabar esa instancia y retornarla
-    return  this.
-    reviewRepository.
-            save(newReview)
-  }
+        const { title , comment , rating, bootcampId } = payload     
+
+        const bootcampById = await this.bootcampRepository.findOneBy({id : bootcampId})
+
+        bootcampById
+
+        const newReview = new Review() 
+        newReview.title = title 
+        newReview.comment = comment 
+        newReview.rating = rating 
+        newReview.bootcamp = bootcampById 
+
+        return this.reviewRepository.save(newReview) }
 
   findAll() {
     return this.reviewRepository.find()

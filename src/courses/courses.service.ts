@@ -4,6 +4,7 @@ import { UpdateCourseDto } from './dto/update-course.dto';
 import { Course } from './entities/course.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Bootcamp } from 'src/bootcamps/entities/bootcamp.entity';
 
 
 @Injectable()
@@ -11,11 +12,31 @@ export class CoursesService {
 
   constructor(
     @InjectRepository(Course) private courseRepository: Repository <Course>,
+    @InjectRepository(Bootcamp) private bootcampRepository: Repository <Bootcamp>
   ) {}
 
-  create(payload: any) {
-    const newCurso = this.courseRepository.create(payload)
-    return this.courseRepository.save(newCurso)
+ async create(payload: CreateCourseDto) {
+
+        const { title , tuition , weeks, description , minimumSkill  , createdAt ,bootcampId } = payload     
+
+        const bootcampById = await this.bootcampRepository.findOneBy({id : bootcampId})
+
+         bootcampById
+
+        const newCurso = new Course() 
+        newCurso.title = title 
+        newCurso.tuition = tuition 
+        newCurso.weeks = weeks 
+        newCurso.description = description 
+        newCurso.minimumSkill = minimumSkill 
+        newCurso.createdAt = createdAt 
+
+        newCurso.bootcamp = bootcampById 
+
+        return this.courseRepository.save(newCurso) 
+
+   // const newCurso = this.courseRepository.create(payload)
+   // return this.courseRepository.save(newCurso)
   }
 
   findAll() {
@@ -27,7 +48,7 @@ export class CoursesService {
   }
 
 
-  async update(id: number, payload: any) {
+  async update(id: number, payload: UpdateCourseDto) {
     const updCourses = await this.courseRepository.findOneBy({id}) ; 
   
     this.courseRepository.merge(updCourses , payload)

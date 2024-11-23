@@ -1,4 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm"
+import { Column, Entity, PrimaryGeneratedColumn , ManyToMany} from "typeorm"
+import { Course } from "src/courses/entities/course.entity"
+
 
 @Entity()
 export class User {
@@ -17,5 +19,5 @@ export class User {
     @Column('varchar' , {length:100 , default:"XXXX"})
     password: string
 
-
+    
 }
